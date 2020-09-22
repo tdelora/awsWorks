@@ -10,9 +10,12 @@ import aws_kpc, aws_icc
 exitBeforeCreate = False
 
 if len(sys.argv) == 2:
-	print("Will use keypair " + sys.argv[1])
+	print("Checking keypair " + sys.argv[1])
 else:
-	print("nope")
+	print("\nUsage: %s <keypair>" % sys.argv[0])
+	print("\nIf the specified <keypair> does not exist it will be created.")
+	print("\nAt completion the AWS instance id will be evented.")
+	print("\n")
 	quit()
 
 ec2_client = boto3.client('ec2')
