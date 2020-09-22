@@ -16,9 +16,9 @@
 ##
 ##### Programs
 #####
-####### awsCreate
-#######
-####### Usage: awsCreate <keypair>
+###### awsCreate
+######
+###### Usage: awsCreate <keypair>
 #######
 ###### awsCreate takes a keypair designation as a commandline argument. If the
 ###### keypair does not exist it will be created, a path to the pem file will be
