@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+import sys
+import aws_kpc, aws_icc
+
+response = aws_icc.aws_instance_state(sys.argv[1])
+print(response)

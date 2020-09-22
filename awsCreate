@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
 import sys
-import boto3
 import aws_kpc, aws_icc
-# import os
-# import json
-
-# Exit if keypair is not provided
 
 exitBeforeCreate = False
 
+# Exit if keypair is not provided
 if len(sys.argv) == 2:
 	print("Checking keypair " + sys.argv[1])
 else:
@@ -18,8 +14,6 @@ else:
 	print("\n")
 	quit()
 
-ec2_client = boto3.client('ec2')
-ec2_resource = boto3.resource('ec2')
 
 returnValue = aws_kpc.aws_kp_check(sys.argv[1])
 
