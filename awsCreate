@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+import sys
+import boto3
+import aws_kpc, aws_icc
+# import os
+# import json
+
+# Exit if keypair is not provided
+
+exitBeforeCreate = False
+
+if len(sys.argv) == 2:
+	print("Will use keypair " + sys.argv[1])
+else:
+	print("nope")
+	quit()
+
+ec2_client = boto3.client('ec2')
+ec2_resource = boto3.resource('ec2')
+
+returnValue = aws_kpc.aws_kp_check(sys.argv[1])
+
+if returnValue == "create":
+	if ( aws_kpc.aws_kp_create(sys.argv[1]) == 0 ):
+		exitBeforeCreate = True
+elif returnValue == "quit":
+	exitBeforeCreate = True
+else:
+	print("keypair " + sys.argv[1] + " exists")
+
+if ( exitBeforeCreate ):
+	print(sys.argv[0] + " : exiting")
+	quit()
+
+instance = aws_icc.aws_create_instance('ami-0e65ed16c9bf1abc7','t2.micro',sys.argv[1])
+print(instance[0].id)
+
+"""
+ec2 = boto3.client('ec2')
+response = ec2.describe_instances()
+print(response)
+"""
+
+quit()
