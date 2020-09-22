@@ -6,3 +6,10 @@
 ### and I thought I would share my code as an example for those who are learning
 ### as well. 
 ###
+##
+## Prerequisite
+###
+### - Python3 is installed: https://www.python.org/download/releases/3.0/
+### - Boto3 is installed: https://pypi.org/project/boto3/
+### - You have an AWS account: https://aws.amazon.com/resources/create-account/
+### - You have setup your AWS credenitals: https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html 
