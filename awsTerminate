@@ -2,5 +2,19 @@
 import sys
 import aws_kpc, aws_icc
 
-response = aws_icc.aws_instance_state(sys.argv[1])
-print(response)
+if len(sys.argv) != 2:
+	print("\nUsage: %s <instance id>" % sys.argv[0])
+	print("\n")
+	quit()
+
+stateCode,stateString = aws_icc.aws_instance_state(sys.argv[1])
+
+if stateCode == 16:
+    # State 16 indicates the instance is running
+    print('Instance {}: {} - Terminating'.format(sys.argv[1],stateString))
+    aws_icc.aws_terminate_instance(sys.argv[1])
+    stateCode,stateString = aws_icc.aws_instance_state(sys.argv[1])
+    if stateCode == 32:
+        print('Instance {}: {} - Terminated'.format(sys.argv[1],stateString))
+    else:
+        print('Instance {}: Received unexpected state {}'.format(sys.argv[1],stateString))

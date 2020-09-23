@@ -3,6 +3,8 @@ from botocore.exceptions import ClientError
 
 def aws_instance_state(instanceIdReq):
         ec2 = boto3.client('ec2')
+        stateCode = -1
+        stateString = "notFound"
 
         try:
                 response = ec2.describe_instances()
@@ -11,15 +13,17 @@ def aws_instance_state(instanceIdReq):
 		# print(e.response)
                 print("aws_icc.aws_instance_state: Unexpected error: %s" % e)
         else:
-                instanceList = response.get('Instances')
-                if instanceList:
-                        # Somthing is running
-                        for instanceDictionary in instanceList:
-                                instanceId = instanceDictionary.get("InstanceId")
-                                if instanceId != None:
-                                        if instanceId == instanceIdReq:
-                                                print("Instance: %s" % instanceDictionary)
-                                                break
+                reservationsList = response.get('Reservations')
+                for listData in reservationsList:
+                        instanceInfo = listData.get("Instances")
+                        for info in instanceInfo:
+                                instanceId = info['InstanceId']
+                                if instanceId == instanceIdReq:
+                                        state = info['State']
+                                        stateCode = state.get('Code')
+                                        stateString = state.get('Name')
+                                        # print(instanceId,stateString)
+        return(stateCode,stateString)            
                                                 
 
 
@@ -35,3 +39,9 @@ def aws_create_instance(iid,it,kn):
         KeyName=kn)
 
 	return instance
+
+def aws_terminate_instance(instanceId):
+        ec2_resource = boto3.resource('ec2')
+        instanceList= [instanceId]
+
+        ec2_resource.instances.filter(InstanceIds=instanceList).terminate()
