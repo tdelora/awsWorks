@@ -1,35 +1,32 @@
 #!/usr/bin/env python3
 import sys
+import argparse
 import aws_kpc, aws_icc
 
-# Exit if keypair is not provided
 exitBeforeCreate = False
+keyPairName = "notSet"
 
-# Exit if keypair is not provided
-if len(sys.argv) == 2:
-	print("Checking keypair " + sys.argv[1])
-else:
-	print("\nUsage: %s <keypair>" % sys.argv[0])
-	print("\nIf the specified <keypair> does not exist it will be created.")
-	print("\nAt completion the AWS instance id will be evented.")
-	print("\n")
-	quit()
+parser = argparse.ArgumentParser()
+parser.add_argument("-k","--keyPair", help="The keyPair to use for the instance",type=str,required=True)
+args = parser.parse_args()
 
-returnValue = aws_kpc.aws_kp_check(sys.argv[1])
+keyPairName = args.keyPair
+
+returnValue = aws_kpc.aws_kp_check(keyPairName)
 
 if returnValue == "create":
-	if ( aws_kpc.aws_kp_create(sys.argv[1]) == 0 ):
+	if ( aws_kpc.aws_kp_create(keyPairName) == 0 ):
 		exitBeforeCreate = True
 elif returnValue == "quit":
 	exitBeforeCreate = True
 else:
-	print("keypair " + sys.argv[1] + " exists")
+	print("keypair " + keyPairName + " exists")
 
 if ( exitBeforeCreate ):
 	print(sys.argv[0] + " : exiting")
 	quit()
 
-instance = aws_icc.aws_create_instance('ami-0e65ed16c9bf1abc7','t2.micro',sys.argv[1])
+instance = aws_icc.aws_create_instance('ami-0e65ed16c9bf1abc7','t2.micro',keyPairName)
 print(instance[0].id)
 
 """
