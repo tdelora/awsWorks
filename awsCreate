@@ -2,6 +2,7 @@
 import sys
 import aws_kpc, aws_icc
 
+# Exit if keypair is not provided
 exitBeforeCreate = False
 
 # Exit if keypair is not provided
@@ -13,7 +14,6 @@ else:
 	print("\nAt completion the AWS instance id will be evented.")
 	print("\n")
 	quit()
-
 
 returnValue = aws_kpc.aws_kp_check(sys.argv[1])
 
