@@ -3,9 +3,9 @@ import sys
 import aws_kpc, aws_icc
 
 # Exit if keypair is not provided
-
 exitBeforeCreate = False
 
+# Exit if keypair is not provided
 if len(sys.argv) == 2:
 	print("Checking keypair " + sys.argv[1])
 else:
