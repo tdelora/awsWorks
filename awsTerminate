@@ -1,20 +1,22 @@
 #!/usr/bin/env python3
 import sys
+import argparse
 import aws_kpc, aws_icc
 
-if len(sys.argv) != 2:
-	print("\nUsage: %s <instance id>" % sys.argv[0])
-	print("\n")
-	quit()
+parser = argparse.ArgumentParser()
+parser.add_argument("-i","--id", help="The instance id to terminate.",type=str)
+# parser.add_argument("-a","--all", help="Terminate all running instances.")
+args = parser.parse_args()
 
-stateCode,stateString = aws_icc.aws_instance_state(sys.argv[1])
+if args.id:
+    stateCode,stateString = aws_icc.aws_instance_state(args.id)
 
-if stateCode == 16:
-    # State 16 indicates the instance is running
-    print('Instance {}: {} - Terminating'.format(sys.argv[1],stateString))
-    aws_icc.aws_terminate_instance(sys.argv[1])
-    stateCode,stateString = aws_icc.aws_instance_state(sys.argv[1])
-    if stateCode == 32:
-        print('Instance {}: {} - Terminated'.format(sys.argv[1],stateString))
-    else:
-        print('Instance {}: Received unexpected state {}'.format(sys.argv[1],stateString))
+    if stateCode == 16:
+        # State 16 indicates the instance is running
+        print('Instance {}: {} - Terminating'.format(args.id,stateString))
+        aws_icc.aws_terminate_instance(args.id)
+        stateCode,stateString = aws_icc.aws_instance_state(args.id)
+        if stateCode == 32:
+            print('Instance {}: {} - Terminated'.format(args.id,stateString))
+        else:
+            print('Instance {}: Received unexpected state {}'.format(args.id,stateString))
