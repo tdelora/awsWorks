@@ -23,4 +23,4 @@
 #####
 ###### Usage: awsTerminate instance_id
 ######
-###### awsTerminate will terminate the specified instance_id if the specified it is in state 16 (running)
+###### awsTerminate will terminate the specified instance_id if the specified it is in state 16 (running).
