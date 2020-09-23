@@ -44,4 +44,9 @@ def aws_terminate_instance(instanceId):
         ec2_resource = boto3.resource('ec2')
         instanceList= [instanceId]
 
-        ec2_resource.instances.filter(InstanceIds=instanceList).terminate()
+        try:
+                ec2_resource.instances.filter(InstanceIds=instanceList).terminate()
+        except ClientError as e:
+                # Somthing went wrong with the describe instances query
+                # print(e.response)
+                print("aws_icc.aws_terminate_instance: %s" % e)
