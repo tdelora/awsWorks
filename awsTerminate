@@ -3,6 +3,8 @@ import sys
 import argparse
 import aws_kpc, aws_icc
 
+inList = []
+
 parser = argparse.ArgumentParser(description='Shutdown one or more running instances')
 parser.add_argument("-i","--id", help="The instance id to terminate.",type=str)
 parser.add_argument("-a","--all", help="Termanate all running instances.",action="store_true")
@@ -17,7 +19,8 @@ if args.id:
     if stateCode == 16:
         # State 16 indicates the instance is running
         print('Instance {}: {} - Terminating'.format(args.id,stateString))
-        aws_icc.aws_terminate_instance(args.id)
+        inList.append(args.id)
+        aws_icc.aws_terminate_instance(inList)
         stateCode,stateString = aws_icc.aws_instance_state(args.id)
         print('Instance {}: {}'.format(args.id,stateString))
     elif stateCode == 32 or stateCode == 48:
@@ -28,3 +31,8 @@ if args.id:
         print('Instance {}: ({}) {} - wait until state is running (16).'.format(args.id,stateCode,stateString))
 elif args.all:
     print("kill all")
+    inList = aws_icc.aws_get_instances_with_state(16)
+    if inList:
+        aws_icc.aws_terminate_instance(inList)
+    else:
+        print("Nothing to terminate.")
