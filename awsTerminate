@@ -19,11 +19,10 @@ if args.id:
         print('Instance {}: {} - Terminating'.format(args.id,stateString))
         aws_icc.aws_terminate_instance(args.id)
         stateCode,stateString = aws_icc.aws_instance_state(args.id)
-        if stateCode == 32 or stateCode == 48:
-            # State 32 indicates the instance is shutting-down
-            # State 48 indicates the instance is terminated
-            print('Instance {}: {}'.format(args.id,stateString))
-        else:
-            print('Instance {}: Received unexpected state {}'.format(args.id,stateString))
+        print('Instance {}: {}'.format(args.id,stateString))
+    elif stateCode == 32 or stateCode == 48:
+        # State 32 indicates the instance is shutting-down
+        # State 48 indicates the instance is terminated
+        print('Instance {}: {}'.format(args.id,stateString))
     else:
-        print('Instance {}: ({}) {} - wait until state is running (16) if not already shutting down.'.format(args.id,stateCode,stateString))
+        print('Instance {}: ({}) {} - wait until state is running (16).'.format(args.id,stateCode,stateString))
