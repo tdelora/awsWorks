@@ -3,8 +3,25 @@ import sys
 import argparse
 import aws_kpc, aws_icc
 
+
+
+
 inList = []
 
+def terminateInstances():
+    if inList:
+        aws_icc.aws_terminate_instance(inList)
+        for instance in inList:
+            stateCode,stateString = aws_icc.aws_instance_state(instance)
+            if stateCode == 32 or stateCode == 48:
+                # State 32 indicates the instance is shutting-down
+                # State 48 indicates the instance is terminated
+                print('Instance {}: {}'.format(instance,stateString))
+            else:
+                print('Received unexpected state ({}) {} when terminateing instance{}'.format(stateCode,stateString,instance))
+
+
+# Work starts here
 parser = argparse.ArgumentParser(description='Shutdown one or more running instances')
 parser.add_argument("-i","--id", help="The instance id to terminate.",type=str)
 parser.add_argument("-a","--all", help="Termanate all running instances.",action="store_true")
@@ -20,19 +37,13 @@ if args.id:
         # State 16 indicates the instance is running
         print('Instance {}: {} - Terminating'.format(args.id,stateString))
         inList.append(args.id)
-        aws_icc.aws_terminate_instance(inList)
-        stateCode,stateString = aws_icc.aws_instance_state(args.id)
-        print('Instance {}: {}'.format(args.id,stateString))
-    elif stateCode == 32 or stateCode == 48:
-        # State 32 indicates the instance is shutting-down
-        # State 48 indicates the instance is terminated
-        print('Instance {}: {}'.format(args.id,stateString))
+        terminateInstances()
     else:
         print('Instance {}: ({}) {} - wait until state is running (16).'.format(args.id,stateCode,stateString))
 elif args.all:
-    print("kill all")
     inList = aws_icc.aws_get_instances_with_state(16)
     if inList:
-        aws_icc.aws_terminate_instance(inList)
+        print("Bulk terminating instances {}".format(inList))
+        terminateInstances()
     else:
         print("Nothing to terminate.")

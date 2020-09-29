@@ -21,6 +21,6 @@
 #####
 ##### awsTerminate
 #####
-###### Usage: awsTerminate instance_id
+###### Usage: awsTerminate <--all> <--id instance_id>
 ######
-###### awsTerminate will terminate the specified instance_id if the specified it is in state 16 (running).
+###### awsTerminate will terminate running (state 16) AWS instances. With the --id (or -i) you can specify ###### the instance or with --all (or -a) all running instances will be terminated without prompting the ###### user.

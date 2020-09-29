@@ -41,7 +41,7 @@ def aws_get_instances_with_state(reqState):
         ec2 = boto3.client('ec2')
         stateCode = -1
         inList = []
-        print(reqState)
+        # print(reqState)
 
         try:
                 response = ec2.describe_instances()
