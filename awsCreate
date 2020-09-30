@@ -6,7 +6,9 @@ import aws_kpc, aws_icc
 exitBeforeCreate = False
 keyPairName = "notSet"
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser("Launches 1 to N instances of AWS Linux with size of t2.micro.")
+parser.add_argument("-n","--minCount",help="The minimum number of instances needed. Default: 1",type=int,default=1)
+parser.add_argument("-x","--maxCount",help="The maximum number of instances needed. Default: 1",type=int,default=1)
 parser.add_argument("-k","--keyPair", help="The keyPair to use for the instance",type=str,required=True)
 args = parser.parse_args()
 
@@ -26,8 +28,14 @@ if ( exitBeforeCreate ):
 	print(sys.argv[0] + " : exiting")
 	quit()
 
-instance = aws_icc.aws_create_instance('ami-0e65ed16c9bf1abc7','t2.micro',keyPairName)
-print(instance[0].id)
+instanceList = aws_icc.aws_create_instance(	'ami-0e65ed16c9bf1abc7',
+											't2.micro',
+											args.minCount,
+											args.maxCount,
+											keyPairName)
+print(type(instanceList))
+for instance in instanceList:
+	print(instance.id)
 
 """
 ec2 = boto3.client('ec2')
