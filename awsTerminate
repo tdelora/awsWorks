@@ -3,9 +3,6 @@ import sys
 import argparse
 import aws_kpc, aws_icc
 
-
-
-
 inList = []
 
 def terminateInstances():
