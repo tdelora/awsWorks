@@ -15,12 +15,12 @@
 ###
 ##### awsCreate
 #####
-###### Usage: awsCreate keypair
+###### Usage: awsCreate [-h] [-n MINCOUNT] [-x MAXCOUNT] -k KEYPAIR
 ######
-###### awsCreate takes a keypair designation as a command line argument. If the keypair does not exist it will be created, a path to the pem file will be printed. The program will then create a Amazon Linux 2 AMI with a type of t2.micro. Got to start somewhere!
+###### awsCreate takes a keypair designation as a mandatory command line argument. If the keypair does not exist it will be created, a path to the pem file will be printed. Optionally the user may specify the minimum and maximum number of instances to start. The program will then create the specified numer of Amazon Linux 2 AMI instances with a type of t2.micro. 
 #####
 ##### awsTerminate
 #####
-###### Usage: awsTerminate <--all> <--id instance_id>
+###### Usage: awsTerminate [-h] [-i ID] [-a]
 ######
 ###### awsTerminate will terminate running (state 16) AWS instances. With the --id (or -i) you can specify the instance or with --all (or -a) all running instances will be terminated without prompting the user.

@@ -9,7 +9,8 @@ keyPairName = "notSet"
 parser = argparse.ArgumentParser("Launches 1 to N instances of AWS Linux with size of t2.micro.")
 parser.add_argument("-n","--minCount",help="The minimum number of instances needed. Default: 1",type=int,default=1)
 parser.add_argument("-x","--maxCount",help="The maximum number of instances needed. Default: 1",type=int,default=1)
-parser.add_argument("-k","--keyPair", help="The keyPair to use for the instance",type=str,required=True)
+requiredArgs = parser.add_argument_group('required named arguments')
+requiredArgs.add_argument("-k","--keyPair", help="The keyPair to use for the instance",type=str,required=True)
 args = parser.parse_args()
 
 keyPairName = args.keyPair
@@ -42,5 +43,6 @@ ec2 = boto3.client('ec2')
 response = ec2.describe_instances()
 print(response)
 """
+
 
 quit()
