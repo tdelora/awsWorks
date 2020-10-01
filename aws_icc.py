@@ -25,13 +25,13 @@ def aws_instance_state(instanceIdReq):
                                         # print(instanceId,stateString)
         return(stateCode,stateString)
                                                 
-def aws_create_instance(iid,it,kn):
+def aws_create_instance(iid,it,minC,maxC,kn):
 	ec2_resource = boto3.resource('ec2')
 
 	instance = ec2_resource.create_instances(
         ImageId=iid,
-        MinCount=1,
-        MaxCount=1,
+        MinCount=minC,
+        MaxCount=maxC,
         InstanceType=it,
         KeyName=kn)
 
