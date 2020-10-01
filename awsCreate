@@ -34,7 +34,6 @@ instanceList = aws_icc.aws_create_instance(	'ami-0e65ed16c9bf1abc7',
 											args.minCount,
 											args.maxCount,
 											keyPairName)
-print(type(instanceList))
 for instance in instanceList:
 	print(instance.id)
 
