@@ -4,7 +4,15 @@ import argparse
 import aws_kpc, aws_icc, aws_lambda
 
 inList = []
-payload = b"""{"action":"term-all"}"""
+"""
+The payload is a basic safety measure, must be passed into lambda function
+as is below or it will not trigger.
+termAllPayload to Lambda function term-running-ec2-instances
+termInstancePayload to Lambda function TBD
+"""
+termAllPayload = b"""{"action":"term-all"}"""
+# termInstancePayload = b"""{"action":"term-instance","id":args.id}"""
+payload = termAllPayload
 
 def terminateInstances():
     if inList:

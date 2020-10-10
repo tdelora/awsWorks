@@ -5,6 +5,11 @@ import aws_kpc, aws_icc, aws_lambda
 
 exitBeforeCreate = False
 keyPairName = "notSet"
+
+"""
+The payload is a basic safety measure, must be passed into lambda function
+monitor-running-ec2-instances as is below or it will not trigger.
+"""
 payload = b"""{"action":"start"}"""
 
 parser = argparse.ArgumentParser("Launches 1 to N instances of AWS Linux with size of t2.micro.")
