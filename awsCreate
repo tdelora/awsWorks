@@ -37,7 +37,7 @@ instanceList = aws_icc.aws_create_instance(	'ami-0e65ed16c9bf1abc7',
 											keyPairName)
 
 if instanceList:
-	if (aws_lambda.trigger_event("my-function",payload)):
+	if (aws_lambda.trigger_event("monitor-running-ec2-instances",payload)):
 		print("AWS Lambda monitoring has been requested.")
 	else:
 		print("AWS Lambda monitoring request has failed. Please monitor your EC2 instances manually!")

@@ -22,7 +22,7 @@ def terminateInstances():
         For future development this belongs here. Issue is the lambda call fails with the
         payload designated for a single instance termination. I have temporarily commented
         out this code to continue general lambda development.
-        
+
         if (aws_lambda.trigger_event("my-function",payload)):
                 print("AWS Lambda monitoring has been informed.")
         else:
@@ -54,7 +54,7 @@ elif args.all:
     if inList:
         print("Bulk terminating instances {}".format(inList))
         terminateInstances()
-        if (aws_lambda.trigger_event("my-function",payload)):
+        if (aws_lambda.trigger_event("term-running-ec2-instances",payload)):
                 print("AWS Lambda monitoring has been informed.")
         else:
             print("AWS Lambda monitoring trigger has failed. Please monitor your EC2 instances manually!")
