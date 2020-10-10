@@ -26,7 +26,6 @@ def get_instances_and_state():
         return isdList
 
 def aws_instance_state(instanceIdReq):
-        ec2 = boto3.client('ec2')
         stateCode = -1
         stateString = "notFound"
 
@@ -57,7 +56,6 @@ def aws_create_instance(iid,it,minC,maxC,kn):
 	return instance
 
 def aws_get_instances_with_state(reqState):
-        ec2 = boto3.client('ec2')
         stateCode = -1
         inList = []
         # print(reqState)

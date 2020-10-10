@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 import sys
 import argparse
-import aws_kpc, aws_icc
+import aws_kpc, aws_icc, aws_lambda
 
 exitBeforeCreate = False
 keyPairName = "notSet"
+payload = b"""{"action":"start"}"""
+
+aws_lambda.trigger_event("my-function",payload)
+quit()
 
 parser = argparse.ArgumentParser("Launches 1 to N instances of AWS Linux with size of t2.micro.")
 parser.add_argument("-n","--minCount",help="The minimum number of instances needed. Default: 1",type=int,default=1)
