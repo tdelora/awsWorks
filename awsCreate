@@ -7,9 +7,6 @@ exitBeforeCreate = False
 keyPairName = "notSet"
 payload = b"""{"action":"start"}"""
 
-aws_lambda.trigger_event("my-function",payload)
-quit()
-
 parser = argparse.ArgumentParser("Launches 1 to N instances of AWS Linux with size of t2.micro.")
 parser.add_argument("-n","--minCount",help="The minimum number of instances needed. Default: 1",type=int,default=1)
 parser.add_argument("-x","--maxCount",help="The maximum number of instances needed. Default: 1",type=int,default=1)
@@ -38,14 +35,14 @@ instanceList = aws_icc.aws_create_instance(	'ami-0e65ed16c9bf1abc7',
 											args.minCount,
 											args.maxCount,
 											keyPairName)
+
+if instanceList:
+	if (aws_lambda.trigger_event("my-function",payload)):
+		print("AWS Lambda monitoring has been requested.")
+	else:
+		print("AWS Lambda monitoring request has failed. Please monitor your EC2 instances manually!")
+
 for instance in instanceList:
 	print(instance.id)
-
-"""
-ec2 = boto3.client('ec2')
-response = ec2.describe_instances()
-print(response)
-"""
-
 
 quit()
