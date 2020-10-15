@@ -20,7 +20,7 @@ def get_instances_and_state():
                                 state = info['State']
                                 stateCode = state.get('Code')
                                 stateString = state.get('Name')
-                                # print(instanceId,stateCode.stateString)
+                                # print(instanceId,stateCode,stateString)
                                 isDict = {'InstanceId':instanceId,'Code':stateCode,'Name':stateString}
                                 isdList.append(isDict)
         return isdList
