@@ -5,15 +5,9 @@ import aws_kpc, aws_icc, aws_event
 
 exitBeforeCreate = False
 keyPairName = "notSet"
-aws_account_id = "985167159610"
-# aws_account_id = "ba9876543210"
-aws_ami = "ami-0e65ed16c9bf1abc7"
 
-"""
-The payload is a basic safety measure, must be passed into lambda function
-monitor-running-ec2-instances as is below or it will not trigger.
-"""
-payload = b"""{"action":"start"}"""
+aws_account_id = "ba9876543210"
+aws_ami = "ami-0e65ed16c9bf1abc7"
 
 parser = argparse.ArgumentParser("Launches 1 to N instances of AWS Linux with size of t2.micro.")
 parser.add_argument("-n","--minCount",help="The minimum number of instances needed. Default: 1",type=int,default=1)
