@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 import sys
 import argparse
-import aws_kpc, aws_icc, aws_lambda
+import aws_kpc, aws_icc, aws_event
 
 exitBeforeCreate = False
 keyPairName = "notSet"
+
+aws_account_id = "ba876543210"
+aws_ami = "ami-0e65ed16c9bf1abc7"
 
 """
 The payload is a basic safety measure, must be passed into lambda function
@@ -35,17 +38,19 @@ if ( exitBeforeCreate ):
 	print(sys.argv[0] + " : exiting")
 	quit()
 
-instanceList = aws_icc.aws_create_instance(	'ami-0e65ed16c9bf1abc7',
+instanceList = aws_icc.aws_create_instance(	aws_ami,
 											't2.micro',
 											args.minCount,
 											args.maxCount,
 											keyPairName)
 
 if instanceList:
-	if (aws_lambda.trigger_event("monitor-running-ec2-instances",payload)):
-		print("AWS Lambda monitoring has been requested.")
+	term_running_arn = "arn:aws:lambda:us-west-1:" + aws_account_id + ":function:term-running-ec2-instances"
+
+	if aws_event.put_lambda_event("term-running-ec2-instances","rate(5 minutes)",term_running_arn,"term-running-ec2-instances"):
+		print("AWS Lambda monitoring has been scheduled.")
 	else:
-		print("AWS Lambda monitoring request has failed. Please monitor your EC2 instances manually!")
+		print("AWS Lambda monitoring scheduling has failed. Please monitor your EC2 instances manually!")
 
 for instance in instanceList:
 	print(instance.id)
