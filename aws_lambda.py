@@ -36,3 +36,38 @@ def trigger_event(function,payload):
                     print("aws_lambda.trigger_event: received unexpected response code {}!".format(HTTPStatusCode))
 
     return(triggerSuccess)
+
+
+def add_permission(accountId,arn):
+    client = boto3.client('lambda')
+    returnValue = False
+    print("{} {}".format(accountId,arn))
+
+    try:
+        client.add_permission(
+        # FunctionName=arn,
+        FunctionName='term-running-ec2-instances',
+        StatementId="1",
+        Action="lambda:InvokeFunction",
+        Principal=accountId
+    )
+    except ClientError as e:
+                # Somthing went wrong with the invokation
+                print("aws_lamda.add_permission: %s" % e)
+    else:
+        returnValue = True
+
+    """
+    response = client.add_permission(
+        # FunctionName=arn,
+        FunctionName='term-running-ec2-instances',
+        StatementId="1",
+        Action="lambda:InvokeFunction",
+        Principal=accountId
+    )
+
+    if response:
+        returnValue = True
+    """
+
+    return returnValue
