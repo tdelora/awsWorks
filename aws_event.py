@@ -2,7 +2,7 @@ import boto3
 import aws_lambda
 
 def put_lambda_event(ruleName,scheduleExpression,accountId,arn,id):
-    client = boto3.client('events')
+    # client = boto3.client('events')
     returnCode = False
 
     response = aws_put_rule(ruleName,scheduleExpression)
@@ -17,7 +17,7 @@ def put_lambda_event(ruleName,scheduleExpression,accountId,arn,id):
     return returnCode
 
 def delete_lambda_event():
-    client = boto3.client('events')
+    # client = boto3.client('events')
 
     pass
 
@@ -37,17 +37,17 @@ def aws_put_rule(ruleName,scheduleExpression):
     return returnCode
 
 def aws_enable_rule(ruleName):
-    client = boto3.client('events')
+    # client = boto3.client('events')
 
     pass
 
 def aws_disable_rule(ruleName):
-    client = boto3.client('events')
+    # client = boto3.client('events')
 
     pass
 
 def aws_delete_rule(ruleName):
-    client = boto3.client('events')
+    # client = boto3.client('events')
     
     pass
 
@@ -68,7 +68,7 @@ def aws_put_targets(ruleName,arn,id):
     return returnCode
 
 def aws_remove_target(ruleName,id):
-    client = boto3.client('events')
+    # client = boto3.client('events')
     
     pass
 
