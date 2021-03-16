@@ -47,13 +47,20 @@ def add_permission(accountId,arn):
         client.add_permission(
         # FunctionName=arn,
         FunctionName='term-running-ec2-instances',
-        StatementId="1",
+        StatementId="2",
         Action="lambda:InvokeFunction",
         Principal=accountId
     )
     except ClientError as e:
-                # Somthing went wrong with the invokation
-                print("aws_lamda.add_permission: %s" % e)
+        # Somthing went wrong with the invokation
+        # print(e.response)
+        if e.response['Error']['Code'] == 'ResourceConflictException':
+			# Permission is already in place, this is ok
+            # print("aws_lamda.add_permission: " + e.response['Error']['Message'])
+            returnValue = True
+        else:
+			# This will print any other boto3 error
+            print("aws_lamda.add_permission: %s" % e)
     else:
         returnValue = True
 
