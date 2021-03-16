@@ -38,7 +38,7 @@ def trigger_event(function,payload):
     return(triggerSuccess)
 
 
-def add_permission(accountId,arn):
+def add_permission(accountId,arn,identifier):
     client = boto3.client('lambda')
     returnValue = False
     print("{} {}".format(accountId,arn))
@@ -47,7 +47,7 @@ def add_permission(accountId,arn):
         client.add_permission(
         # FunctionName=arn,
         FunctionName='term-running-ec2-instances',
-        StatementId="2",
+        StatementId=identifier,
         Action="lambda:InvokeFunction",
         Principal=accountId
     )

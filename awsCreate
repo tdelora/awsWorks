@@ -5,7 +5,8 @@ import aws_kpc, aws_icc, aws_event
 
 exitBeforeCreate = False
 keyPairName = "notSet"
-aws_account_id = "ba9876543210"
+# aws_account_id = "ba9876543210"
+aws_account_id = "985167159610"
 aws_ami = "ami-0e65ed16c9bf1abc7"
 
 parser = argparse.ArgumentParser("Launches 1 to N instances of AWS Linux with size of t2.micro.")
@@ -40,7 +41,7 @@ instanceList = aws_icc.aws_create_instance(	aws_ami,
 if instanceList:
 	term_running_arn = "arn:aws:lambda:us-west-1:" + aws_account_id + ":function:term-running-ec2-instances"
 
-	if aws_event.put_lambda_event("term-running-ec2-instances","rate(5 minutes)",aws_account_id,term_running_arn,"term-running-ec2-instances"):
+	if aws_event.put_lambda_event("term-running-ec2-instances","rate(5 minutes)","awsCreate",aws_account_id,term_running_arn,"term-running-ec2-instances"):
 		print("AWS Lambda monitoring has been scheduled.")
 	else:
 		print("AWS Lambda monitoring scheduling has failed. Please monitor your EC2 instances manually!")

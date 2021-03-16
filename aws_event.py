@@ -1,14 +1,14 @@
 import boto3
 import aws_lambda
 
-def put_lambda_event(ruleName,scheduleExpression,accountId,arn,id):
+def put_lambda_event(ruleName,scheduleExpression,identifier,accountId,arn,id):
     # client = boto3.client('events')
     returnCode = False
 
     response = aws_put_rule(ruleName,scheduleExpression)
 
     if response:
-        response = aws_lambda.add_permission(accountId,arn)
+        response = aws_lambda.add_permission(accountId,arn,identifier)
         if response:
             response = aws_put_targets(ruleName,arn,id)
             if response:
