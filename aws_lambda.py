@@ -57,11 +57,13 @@ def add_permission(accountId,arn):
         if e.response['Error']['Code'] == 'ResourceConflictException':
 			# Permission is already in place, this is ok
             # print("aws_lamda.add_permission: " + e.response['Error']['Message'])
+            # print("Permission in place")
             returnValue = True
         else:
 			# This will print any other boto3 error
             print("aws_lamda.add_permission: %s" % e)
     else:
+        # print("Permission added")
         returnValue = True
 
     """
