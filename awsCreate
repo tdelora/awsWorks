@@ -3,11 +3,16 @@ import os,sys
 import argparse
 import aws_kpc, aws_icc, aws_event
 
+# Variables
+exitBeforeCreate = False
 keyPairName = "notSet"
 
 # Read the AWS account id from the environment, raise keyerror if it does not exist.
+# Python note: The square brackets in the dictionary reference below will automatically
+# raise a key error if AWS_ACCOUNT_ID does not exist.
 aws_account_id = os.environ['AWS_ACCOUNT_ID']
 
+# Set and read the command line arguments.
 parser = argparse.ArgumentParser("Launches 1 to N instances of AWS Linux with default size of t2.micro.")
 parser.add_argument("-a","--ami",help="The type of ami to start. Default: Amazon Linux 2 AMI HVM, SSD (ami-0a245a00f741d6301)",type=str,default="ami-0a245a00f741d6301")
 parser.add_argument("-i","--instanceType",help="The type of instance to start. Default: t2.micro",type=str,default="t2.micro")
@@ -17,31 +22,41 @@ requiredArgs = parser.add_argument_group('required named arguments')
 requiredArgs.add_argument("-k","--keyPair", help="The keyPair to use for the instance",type=str,required=True)
 args = parser.parse_args()
 
-keyPairName = args.keyPair
-
-returnValue = aws_kpc.aws_kp_check(keyPairName)
-
+# Check if the keypair file exists.
+returnValue = aws_kpc.aws_kp_check(args.keyPair)
 if returnValue == "create":
-	if ( aws_kpc.aws_kp_create(keyPairName) == 0 ):
+	# The keypair has to be created
+	if ( aws_kpc.aws_kp_create(args.keyPair) == 0 ):
+		# Somthing went wrong, set the bail flag.
 		exitBeforeCreate = True
 elif returnValue == "quit":
+	# Set the bail flag
 	exitBeforeCreate = True
 else:
-	print("keypair " + keyPairName + " exists")
+	print("keypair " + args.keyPair + " exists")
 
+# If exitBeforeCreate is True we should exit before the instances are created
+if ( exitBeforeCreate ):
+	print(sys.argv[0] + " : exiting")
+	quit()
+
+# We are cleared to create the instances
 instanceList = aws_icc.aws_create_instance(	args.ami,
 											args.instanceType,
 											args.minCount,
 											args.maxCount,
-											keyPairName)
+											args.keyPair)
 
+# The instances have been created, set up Lambda monitoring.
 if instanceList:
 	if aws_event.put_lambda_event("term-running-ec2-instances","rate(5 minutes)","awsCreate",aws_account_id):
 		print("AWS Lambda monitoring has been scheduled.")
 	else:
 		print("AWS Lambda monitoring scheduling has failed. Please monitor your EC2 instances manually!")
 
+# Display the created instances
 for instance in instanceList:
 	print(instance.id)
 
+# Our work is complete
 quit()
