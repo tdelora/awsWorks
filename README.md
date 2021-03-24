@@ -15,9 +15,9 @@
 ###
 ##### awsCreate
 #####
-###### Usage: awsCreate [-h] [-n MINCOUNT] [-x MAXCOUNT] -k KEYPAIR
+###### Usage: awsCreate [-h] [-n MINCOUNT] [-x MAXCOUNT] [-i INSTANCETYPE] -k KEYPAIR
 ######
-###### awsCreate takes a keypair designation as a mandatory command line argument. If the keypair does not exist it will be created, a path to the pem file will be printed. Optionally the user may specify the minimum and maximum number of instances to start. The program will then create the specified numer of Amazon Linux 2 AMI instances with a type of t2.micro. 
+###### awsCreate takes a keypair designation as a mandatory command line argument. If the keypair does not exist it will be created, a path to the pem file will be printed. Optionally the user may specify the minimum and maximum number of instances to start and the type of instance. The program will then create the specified numer of Amazon Linux 2 AMI instances on the specified type. 
 #####
 ##### awsTerminate
 #####
