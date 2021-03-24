@@ -1,16 +1,16 @@
 import boto3
 import aws_lambda
 
-def put_lambda_event(ruleName,scheduleExpression,identifier,accountId,arn,id):
+def put_lambda_event(ruleName,scheduleExpression,identifier,accountId):
     # client = boto3.client('events')
     returnCode = False
 
     response = aws_put_rule(ruleName,scheduleExpression)
 
     if response:
-        response = aws_lambda.add_permission(accountId,arn,identifier)
+        response = aws_lambda.add_permission(accountId,ruleName,identifier)
         if response:
-            response = aws_put_targets(ruleName,arn,id)
+            response = aws_put_targets(accountId,ruleName)
             if response:
                 returnCode = True
     
@@ -51,11 +51,13 @@ def aws_delete_rule(ruleName):
     
     pass
 
-def aws_put_targets(ruleName,arn,id):
+def aws_put_targets(accountId,ruleName):
     client = boto3.client('events')
     returnCode = False
 
-    targetsList = [{"Arn":"arn:aws:lambda:us-west-1:985167159610:function:term-running-ec2-instances","Id":"term-running-ec2-instances"}]
+    arnStr= "arn:aws:lambda:us-west-1:" + accountId + ":function:" + ruleName
+    targetsList = [{"Arn":arnStr,"Id":ruleName}]
+
     response = client.put_targets(Rule=ruleName,Targets=targetsList)
 
     httpStatusCode = getHttpsStatusCode(response)

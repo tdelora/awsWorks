@@ -38,9 +38,7 @@ instanceList = aws_icc.aws_create_instance(	aws_ami,
 											keyPairName)
 
 if instanceList:
-	term_running_arn = "arn:aws:lambda:us-west-1:" + aws_account_id + ":function:term-running-ec2-instances"
-
-	if aws_event.put_lambda_event("term-running-ec2-instances","rate(5 minutes)","awsCreate",aws_account_id,term_running_arn,"term-running-ec2-instances"):
+	if aws_event.put_lambda_event("term-running-ec2-instances","rate(5 minutes)","awsCreate",aws_account_id):
 		print("AWS Lambda monitoring has been scheduled.")
 	else:
 		print("AWS Lambda monitoring scheduling has failed. Please monitor your EC2 instances manually!")
