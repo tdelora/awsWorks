@@ -4,15 +4,15 @@ import argparse
 import aws_kpc, aws_icc, aws_event
 
 keyPairName = "notSet"
-aws_ami = "ami-0e65ed16c9bf1abc7"
 
 # Read the AWS account id from the environment, raise keyerror if it does not exist.
 aws_account_id = os.environ['AWS_ACCOUNT_ID']
 
-parser = argparse.ArgumentParser("Launches 1 to N instances of AWS Linux with size of t2.micro.")
+parser = argparse.ArgumentParser("Launches 1 to N instances of AWS Linux with default size of t2.micro.")
+parser.add_argument("-a","--ami",help="The type of ami to start. Default: Amazon Linux 2 AMI HVM, SSD (ami-0a245a00f741d6301)",type=str,default="ami-0a245a00f741d6301")
+parser.add_argument("-i","--instanceType",help="The type of instance to start. Default: t2.micro",type=str,default="t2.micro")
 parser.add_argument("-n","--minCount",help="The minimum number of instances needed. Default: 1",type=int,default=1)
 parser.add_argument("-x","--maxCount",help="The maximum number of instances needed. Default: 1",type=int,default=1)
-parser.add_argument("-i","--instanceType",help="The type of instance to start. Default: t2.micro",type=str,default="t2.micro")
 requiredArgs = parser.add_argument_group('required named arguments')
 requiredArgs.add_argument("-k","--keyPair", help="The keyPair to use for the instance",type=str,required=True)
 args = parser.parse_args()
@@ -29,7 +29,7 @@ elif returnValue == "quit":
 else:
 	print("keypair " + keyPairName + " exists")
 
-instanceList = aws_icc.aws_create_instance(	aws_ami,
+instanceList = aws_icc.aws_create_instance(	args.ami,
 											args.instanceType,
 											args.minCount,
 											args.maxCount,
