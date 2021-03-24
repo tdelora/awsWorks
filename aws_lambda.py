@@ -55,13 +55,13 @@ def add_permission(accountId,ruleName,identifier):
         if e.response['Error']['Code'] == 'ResourceConflictException':
 			# Permission is already in place, this is ok
             # print("aws_lamda.add_permission: " + e.response['Error']['Message'])
-            # print("Permission in place")
+            print("Permission already in place Lambda to execute {}, Statement Id: {}".format(ruleName,identifier))
             returnValue = True
         else:
 			# This will print any other boto3 error
             print("aws_lamda.add_permission: %s" % e)
     else:
-        # print("Permission added")
+        print("Permission granted for Lambda to execute {}, Statement Id: {}".format(ruleName,identifier))
         returnValue = True
 
     return returnValue
