@@ -3,7 +3,6 @@ import os,sys
 import argparse
 import aws_kpc, aws_icc, aws_event
 
-exitBeforeCreate = False
 keyPairName = "notSet"
 aws_ami = "ami-0e65ed16c9bf1abc7"
 
@@ -29,10 +28,6 @@ elif returnValue == "quit":
 	exitBeforeCreate = True
 else:
 	print("keypair " + keyPairName + " exists")
-
-if ( exitBeforeCreate ):
-	print(sys.argv[0] + " : exiting")
-	quit()
 
 instanceList = aws_icc.aws_create_instance(	aws_ami,
 											args.instanceType,
