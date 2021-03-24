@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
-import sys
+import os,sys
 import argparse
 import aws_kpc, aws_icc, aws_event
 
 exitBeforeCreate = False
 keyPairName = "notSet"
-aws_account_id = "ba9876543210"
 aws_ami = "ami-0e65ed16c9bf1abc7"
+
+# Read the AWS account id from the environment, raise keyerror if it does not exist.
+aws_account_id = os.environ['AWS_ACCOUNT_ID']
 
 parser = argparse.ArgumentParser("Launches 1 to N instances of AWS Linux with size of t2.micro.")
 parser.add_argument("-n","--minCount",help="The minimum number of instances needed. Default: 1",type=int,default=1)
