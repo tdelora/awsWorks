@@ -64,17 +64,4 @@ def add_permission(accountId,ruleName,identifier):
         # print("Permission added")
         returnValue = True
 
-    """
-    response = client.add_permission(
-        # FunctionName=arn,
-        FunctionName='term-running-ec2-instances',
-        StatementId="1",
-        Action="lambda:InvokeFunction",
-        Principal=accountId
-    )
-
-    if response:
-        returnValue = True
-    """
-
     return returnValue
